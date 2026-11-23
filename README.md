@@ -41,6 +41,4 @@
   <a href="https://ieeexplore.ieee.org/document/9182252"><img src="./assets/btn-ieee.svg" height="38" alt="Read the IEEE paper"/></a>
 </p>
 
-<img src="./assets/activity.svg" width="100%" alt="Activity on GitHub in the last year: contribution graph, streaks and achievements. Updated daily."/>
-
 <a href="mailto:srikanth.pinisetti@gmail.com"><img src="./assets/footer.svg" width="100%" alt="Let's talk data: data platform architecture, Snowflake and Databricks, or a side project. srikanth.pinisetti@gmail.com"/></a>
