@@ -51,11 +51,14 @@ def fetch(login, old):
     try:
         a = get(f"https://github.com/{login}?tab=achievements")
         found = []
-        for m in re.finditer(r'alt="Achievement: ([^"]+)"', a):
+        hits = list(re.finditer(r'alt="Achievement: ([^"]+)"', a))
+        for i, m in enumerate(hits):
             name = html.unescape(m.group(1))
             if name in [f[0] for f in found]:
                 continue
-            tier = re.search(r"\bx(\d)\b", re.sub(r"<[^>]+>", " ", a[m.end():m.end() + 1500]))
+            # the "x2" tier label sits between this badge and the next one
+            end = hits[i + 1].start() if i + 1 < len(hits) else m.end() + 1500
+            tier = re.search(r"\bx(\d)\b", re.sub(r"<[^>]+>", " ", a[m.end():end]))
             found.append([name, int(tier.group(1)) if tier else 1])
         if found:
             ach = found
