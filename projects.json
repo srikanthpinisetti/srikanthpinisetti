@@ -1,0 +1,34 @@
+{
+  "_how_to_use": "Projects shown on the profile, in this order. Add one here, or just add the topic 'showcase' to any public repo you own: the weekly workflow adds it at the end. Fields: repo (owner/name) or url; name; kind (small label); blurb (2-3 lines); status ('auto' shows the latest release, or any text like 'Live' or 'In development'). language, license and version are fallbacks used when GitHub can't be reached. Optional: mono (2-letter tile), link_label. exclude: repos never to show, even if tagged 'showcase'.",
+  "accounts": [
+    "datacrate360",
+    "srikanthpinisetti"
+  ],
+  "topic": "showcase",
+  "more_url": "https://github.com/datacrate360",
+  "projects": [
+    {
+      "repo": "datacrate360/agent-countercheck",
+      "name": "Agent Countercheck",
+      "kind": "Open source · CLI",
+      "blurb": "Proof that AI agents' work really happened. Re-runs your checks in a clean copy the agent can't edit and writes a sealed receipt.",
+      "status": "auto",
+      "language": "Rust",
+      "license": "MIT",
+      "version": "v0.21.0"
+    },
+    {
+      "url": "https://datacrate360.com",
+      "name": "DataCrate360",
+      "kind": "Community · Labs",
+      "blurb": "Built by data people, for data people: posts, fixes for real errors, and SQL, Python, dbt, Airflow, Spark and Git labs in the browser.",
+      "status": "Live",
+      "language": "JavaScript",
+      "link_label": "datacrate360.com",
+      "mono": "DC"
+    }
+  ],
+  "exclude": [
+    "datacrate360/datacrate360-launcher"
+  ]
+}
