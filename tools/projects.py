@@ -119,16 +119,20 @@ def more_card(url):
              f'<text x="{CW/2}" y="160" text-anchor="middle" font-family="Mono" font-size="12" fill="{ACCENTS[0]}">{esc(url.replace("https://", ""))}</text>')
     return svg(CW, CH, "".join(b))
 
-def header(count):
-    W, H = 850, 132
-    b = [background(W, H, "hd", (720, 170), GLOW)]
-    b.append(f'<text x="36" y="48" font-family="MonoM" font-size="10.5" letter-spacing="1.6" fill="{ACCENTS[0]}">SIDE PROJECTS · OPEN SOURCE</text>'
-             f'<text x="35" y="88" font-family="Disp" font-size="32" letter-spacing="-.7" fill="{TEXT}">Projects.</text>'
-             f'<text x="36" y="114" font-family="Sans" font-size="14.5" fill="{MUTED}">Tools I build outside client work, mostly for data and AI engineers.</text>')
+def header(count, W=850):
+    """The dark Projects band; W=400 is the phone version."""
+    phone = W < 600
+    H = 150 if phone else 132
+    b = [background(W, H, "hd", (W - 130, H + 38), GLOW)]
+    sub = ["Tools I build outside client work,", "mostly for data and AI engineers."] if phone else ["Tools I build outside client work, mostly for data and AI engineers."]
+    x = 20 if phone else 36
+    b.append(f'<text x="{x}" y="44" font-family="MonoM" font-size="10" letter-spacing="1.5" fill="{ACCENTS[0]}">SIDE PROJECTS · OPEN SOURCE</text>'
+             f'<text x="{x-1}" y="84" font-family="Disp" font-size="{28 if phone else 32}" letter-spacing="-.7" fill="{TEXT}">Projects.</text>'
+             + "".join(f'<text x="{x}" y="{110+i*20}" font-family="Sans" font-size="14" fill="{MUTED}">{l}</text>' for i, l in enumerate(sub)))
     lab = "All projects"
     w = width(lab, "SansM", 13) + 32
-    b.append(f'<rect x="{W-36-w:.1f}" y="62" width="{w:.1f}" height="34" rx="17" fill="{TEXT}"/>'
-             f'<text x="{W-36-w+16:.1f}" y="83.7" font-family="SansM" font-size="13" fill="#141414">{lab}</text>')
+    b.append(f'<rect x="{W-x-w:.1f}" y="{60 if phone else 62}" width="{w:.1f}" height="34" rx="17" fill="{TEXT}"/>'
+             f'<text x="{W-x-w+16:.1f}" y="{81.7 if phone else 83.7}" font-family="SansM" font-size="13" fill="#141414">{lab}</text>')
     b.append(f'<rect x=".5" y=".5" width="{W-1}" height="{H-1}" rx="14" stroke="{LINE}"/>')
     return svg(W, H, "".join(b))
 
@@ -145,6 +149,7 @@ def main():
             os.remove(os.path.join(OUT, f))
     more = cfg.get("more_url", "https://github.com/" + cfg["accounts"][0])
     open(os.path.join(OUT, "header.svg"), "w").write(header(len(projects)))
+    open(os.path.join(OUT, "header-phone.svg"), "w").write(header(len(projects), W=400))
     items = []
     for i, p in enumerate(projects):
         open(os.path.join(OUT, slug(p) + ".svg"), "w").write(card(p, i))
@@ -154,7 +159,8 @@ def main():
         open(os.path.join(OUT, "more.svg"), "w").write(more_card(more))
         items.append(f'<a href="{more}"><img src="./assets/projects/more.svg" width="49%" alt="More projects on GitHub: {more}"/></a>')
     rows = ["<p align=\"center\">\n  " + "\n  ".join(items[k:k + 2]) + "\n</p>" for k in range(0, len(items), 2)]
-    block = (f'<a href="{more}"><img src="./assets/projects/header.svg" width="100%" alt="Projects: tools I build outside client work, mostly for data and AI engineers."/></a>\n\n'
+    block = (f'<a href="{more}"><picture><source media="(max-width: 700px)" srcset="./assets/projects/header-phone.svg"/>'
+             f'<img src="./assets/projects/header.svg" width="100%" alt="Projects: tools I build outside client work, mostly for data and AI engineers."/></picture></a>\n\n'
              + "\n\n".join(rows))
     md = open(README).read()
     md = re.sub(r"<!-- PROJECTS:START -->.*?<!-- PROJECTS:END -->",
